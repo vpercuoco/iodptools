@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='iodptools',
-    version='0.1.0',    
+    version='0.1.1',    
     description='A Python package containing common tools used with IODP data',
     url='https://github.com/vpercuoco/iodptools',
     author='Vincent Percuoco',
