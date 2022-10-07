@@ -1,6 +1,6 @@
 import pandas as pd
 import pandera as pa
-
+# Dave and Vinny
 
 # Poor data is captured in in thrown errors:
 # lazy = True tells the engine to validate all columns before throwning error, otherwise error is thrown after first invalid column
