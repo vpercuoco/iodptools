@@ -1,6 +1,5 @@
 import pandas as pd
 import pandera as pa
-# Dave and Vinny
 
 # Poor data is captured in in thrown errors:
 # lazy = True tells the engine to validate all columns before throwning error, otherwise error is thrown after first invalid column
@@ -44,7 +43,7 @@ class BaseSchema():
                 "Instrument" : pa.Column(str),
                 "Instrument group" : pa.Column(str),
                 "Timestamp (UTC)" : pa.Column(str),
-                "Text ID" : pa.Column(str,checks=pa.Check.str_matches("[A-X]+[0-9]+"), nullable=True),
+                "Text ID" : pa.Column(str,checks=pa.Check.str_matches("[A-Z]+[0-9]+"), nullable=True),
                 "Test No." : pa.Column(int,checks=pa.Check.gt(0)),
                 "(Sample|Test|Result) comments" : pa.Column(str,coerce=True,nullable=True,regex=True,) # this applies to three columns
             })
