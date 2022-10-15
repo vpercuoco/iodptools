@@ -193,7 +193,7 @@ class ErrorPainter():
         print(f'saved as {filename}')
         
         
-    def __color_negative(v, color):
+    def __color_negative(self, v, color):
         # return f"color: {color};" # foreground color
         return f'background-color: {color}' # background color
 
