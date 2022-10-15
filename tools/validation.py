@@ -164,26 +164,26 @@ class ErrorPainter():
         Returns:
             pd.io.formats.style.Styler: A styler object which renders the dataframe error cells in red. To access the underlying data use the .data method.
         """
-        __highlighted_dataframe = None
+        highlight_dataframe = None
         
         # Currently only returning errors for "Column", and filtering out datatype errors because they seem to break pandera
-        __distinct_columns = self.errors[
+        distinct_columns = self.errors[
             (self.errors['schema_context']=='Column') &
             (self.errors['index'].notnull()) &
             (self.errors['check_number'].notna())]
         
-        __distinct_columns = np.unique(__distinct_columns.loc[:,'column']) #
+        distinct_columns = np.unique(distinct_columns.loc[:,'column']) #
         
     
-        for col in __distinct_columns: 
+        for col in distinct_columns: 
             indices = self.errors[(self.errors['column']==col) & (self.errors['index'].notnull())].loc[:,'index']
             
-            if __highlighted_dataframe == None:
-                __highlighted_dataframe  = self.dataframe.style.applymap(self.__color_negative, color='red', subset=(indices,col))
+            if highlight_dataframe == None:
+                highlight_dataframe  = self.dataframe.style.applymap(self.__color_negative, color='red', subset=(indices,col))
             else:
-                __highlighted_dataframe.applymap(self.__color_negative,color='red',subset=(indices,col))  
+                highlight_dataframe.applymap(self.__color_negative,color='red',subset=(indices,col))  
         
-        self.highlighted_dataframe = __highlighted_dataframe
+        self.highlighted_dataframe = highlight_dataframe
      
     def to_excel(self,filename: str):
         """Exports the styled dataframe to excel. Exporting to csv does not maintain highlights.
