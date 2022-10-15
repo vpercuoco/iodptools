@@ -23,7 +23,6 @@ class BaseSchema():
     def __init__(self):
         pass
     
-    @staticmethod
     def get_base_schema(self) -> pa.DataFrameSchema:
         core_type = ['H','X','F','R']
         archive_types = ['A','W']
@@ -60,7 +59,6 @@ class AnalysisSchema():
         self.base_schema = BaseSchema().get_base_schema()
         self.generate_lore_report_basic_schemas()
     
-    @staticmethod
     def generate_lore_report_basic_schemas(self):
         
         # Analysis Schemas
