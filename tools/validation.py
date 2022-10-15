@@ -53,7 +53,6 @@ class BaseSchema():
 
 
 
-
 class AnalysisSchema():
     
     def __init__(self):
@@ -173,7 +172,7 @@ class ErrorPainter():
             (self.errors['index'].notnull()) &
             (self.errors['check_number'].notna())]
         
-        __distinct_columns = np.unique(self.distinct_cols.loc[:,'column']) #
+        __distinct_columns = np.unique(__distinct_columns.loc[:,'column']) #
         
     
         for col in __distinct_columns: 
