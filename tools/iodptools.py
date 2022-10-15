@@ -1,5 +1,6 @@
 import pandas as pd
 import pandera as pa
+import numpy as np
 
 # Poor data is captured in in thrown errors:
 # lazy = True tells the engine to validate all columns before throwning error, otherwise error is thrown after first invalid column
@@ -21,7 +22,8 @@ class BaseSchema():
 
     def __init__(self):
         pass
-        
+    
+    @staticmethod
     def get_base_schema(self) -> pa.DataFrameSchema:
         core_type = ['H','X','F','R']
         archive_types = ['A','W']
@@ -59,6 +61,7 @@ class AnalysisSchema():
         self.base_schema = BaseSchema().get_base_schema()
         self.generate_lore_report_basic_schemas()
     
+    @staticmethod
     def generate_lore_report_basic_schemas(self):
         
         # Analysis Schemas
@@ -141,5 +144,59 @@ class AnalysisSchema():
         
 
 
+class ErrorPainter():
+    """Class to find dataframe errors given a DataFrameSchema to compare against.
+    """
+    
+    def __init__(self, dataframe: pd.DataFrame, schema: pa.DataFrameSchema):
+        """Intializes ErrorPainter and find column/indices in dataframe breaking schema rules
 
+        Args:
+            dataframe (pd.DataFrame): Dataframe to find errors
+            schema (pa.DataFrameSchema): A DataFrameSchema to compare against
+        """
+        self.dataframe = dataframe
+        self.schema = schema
+        self.errors = get_errors(self.dataframe,self.schema)
+        
+    def highlight_column_errors(self):
+        """Renders dataframe error cells with a red background. 
+
+        Returns:
+            pd.io.formats.style.Styler: A styler object which renders the dataframe error cells in red. To access the underlying data use the .data method.
+        """
+        __highlighted_dataframe = None
+        
+        # Currently only returning errors for "Column", and filtering out datatype errors because they seem to break pandera
+        __distinct_columns = self.errors[
+            (self.errors['schema_context']=='Column') &
+            (self.errors['index'].notnull()) &
+            (self.errors['check_number'].notna())]
+        
+        __distinct_columns = np.unique(self.distinct_cols.loc[:,'column']) #
+        
+    
+        for col in __distinct_columns: 
+            indices = self.errors[(self.errors['column']==col) & (self.errors['index'].notnull())].loc[:,'index']
+            
+            if __highlighted_dataframe == None:
+                __highlighted_dataframe  = self.dataframe.style.applymap(self.__color_negative, color='red', subset=(indices,col))
+            else:
+                __highlighted_dataframe.applymap(self.__color_negative,color='red',subset=(indices,col))  
+        
+        self.highlighted_dataframe = __highlighted_dataframe
+     
+    def to_excel(self,filename: str):
+        """Exports the styled dataframe to excel. Exporting to csv does not maintain highlights.
+
+        Args:
+            filename (str): A filename for the exported .xlsx.
+        """
+        self.highlighted_dataframe.to_excel(filename, index=False)
+        print(f'saved as {filename}')
+        
+        
+    def __color_negative(v, color):
+        # return f"color: {color};" # foreground color
+        return f'background-color: {color}' # background color
 
