@@ -5,6 +5,15 @@ import numpy as np
 # Poor data is captured in in thrown errors:
 # lazy = True tells the engine to validate all columns before throwning error, otherwise error is thrown after first invalid column
 def get_errors(dataframe: pd.DataFrame, dataframe_schema: pa.DataFrameSchema):
+    """Gets dataframe errors when comparing against a given schema
+
+    Args:
+        dataframe (pd.DataFrame): A pandas dataframe
+        dataframe_schema (pa.DataFrameSchema): A pandera dataframeschema
+
+    Returns:
+        dataframe (pd.DataFrame): A dataframe showing indices and columns of violated schema rules when they exist, otherwise None.
+    """
     errors = None
     try:
         dataframe_schema(dataframe, lazy=True)
@@ -431,6 +440,14 @@ class AnalysisSchema():
         
          
     def get_analysis_schema(self, analysis:str) -> pa.DataFrameSchema:
+        """Returns the LORE analysis schema given the name
+
+        Args:
+            analysis (str): The shorthand code for identifying a LORE report
+
+        Returns:
+            pa.DataFrameSchema: The report's associated pandera DataFrameSchema 
+        """
         return self.analysis_schemas[analysis]
         
 
