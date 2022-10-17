@@ -3,41 +3,39 @@
 
 ## Finding and displaying report errors:
 
-
-
 ```python
 # install packages:
 !pip uninstall iodptools --yes
 !pip install --upgrade git+https://github.com/vpercuoco/iodptools
 
 # import packages:
-from tools import iodptools
+from tools import validation as v
 import pandas as pd
 
 # import dataframe
 df = pd.read_csv('./mad.csv')
 
 # Import analysis schema:
-mad_schema = iodptools.AnalysisSchema().get_analysis_schema('mad')
+mad_schema = v.AnalysisSchema().get_analysis_schema('mad')
 
 # Find errors and color dataframe
-painter = ErrorPainter(df, mad_schema)
-painter.highlight_column_errors()
+checker = ErrorChecker(df, mad_schema)
+checker.highlight_column_errors()
 
 # Display dataframe of columns and indices where schema rules were broken:
-painter.errors
+checker.errors
 
 # Display highlighted dataframe
-painter.highlighted_dataframe
+checker.highlighted_dataframe
 
 # Export highlighted dataframe to excel
-painter.to_excel(filename='./mad_with_errors.xlsx')
+checker.to_excel(filename='./mad_with_errors.xlsx')
 ```
 
 
 
 ## List available schemas
 ```python
-schema = iodptools.AnalysisSchema()
+schema = v.AnalysisSchema()
 print(schema.analysis_schemas.keys())
 ```
