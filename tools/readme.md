@@ -1,5 +1,6 @@
-# IODPTools
+# Validation
 
+Package can be used to verify a LORE report by comparing the contents of report columns against a set of established schema. 
 
 ## Finding and displaying report errors:
 
